@@ -1,6 +1,6 @@
 ---
 - name: Revoke VPN access for a user
-  hosts: tag_Name_infroadwarrior-vpn
+  hosts: localhost
   pre_tasks:
     - block:
         - name: Ensure all vars defined
