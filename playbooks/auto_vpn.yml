@@ -31,7 +31,7 @@
 
     - name: Create VPN Instance
       ansible.builtin.expect:
-        command: "/home/afif/new_vpnuser.sh"
+        command: "/home/afif/vpnuser.sh"
         responses:
           "Enter PEM pass phrase:": "{{random_value.stdout}}"
           "Verifying - Enter PEM pass phrase:": "{{random_value.stdout}}"
