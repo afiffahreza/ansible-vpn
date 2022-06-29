@@ -6,8 +6,8 @@
     gcp_project: my-project
     gcp_cred_kind: serviceaccount
     gcp_cred_file: /home/my_account.json
-    zone: "us-central1-a"
-    region: "us-central1"
+    zone: "asia-southeast2-a"
+    region: "asia-southeast2"
 
   tasks:
     - name: create a disk

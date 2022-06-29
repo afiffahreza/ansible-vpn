@@ -1,0 +1,32 @@
+---
+- name: Revoke VPN access for a user
+  hosts: tag_Name_infroadwarrior-vpn
+  pre_tasks:
+    - block:
+        - name: Ensure all vars defined
+          assert:
+            that: "{{ item }} is defined"
+            msg: "variable {{ item }} must be defined"
+          with_items:
+            - username
+
+  tasks:
+    - set_fact:
+        vpn_name: "oy_{{ username }}"
+      run_once: yes
+
+    - name: Set VPN name's revocation file content
+      copy:
+        dest: "/home/ubuntu/ovpnrevoke.txt"
+        content: "{{ vpn_name }}"
+
+    - name: Revoke VPN
+      ansible.builtin.expect:
+        command: "/home/ubuntu/vpnuserrevoke.sh"
+
+    - name: Copy certificate revocation list (CRL) and restart server
+      shell: |
+        sudo cp openvpn-ca/keys/crl.pem /etc/openvpn/keys/crl.pem
+        sudo service openvpn@server restart
+      args:
+        chdir: /home/ubuntu

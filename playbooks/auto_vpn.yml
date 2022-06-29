@@ -1,0 +1,37 @@
+---
+- name: Create a new VPN file for a user
+  hosts: localhost
+  pre_tasks:
+    - block:
+        - name: Ensure all vars defined
+          assert:
+            that: "{{ item }} is defined"
+            msg: "variable {{ item }} must be defined"
+          with_items:
+            - username
+
+  tasks:
+    - set_fact:
+        vpn_name: "oy_{{ username }}"
+      run_once: yes
+
+    - name: Set VPN name's file content
+      copy:
+        dest: "/home/afif/ovpnuser.txt"
+        content: "{{ vpn_name }}"
+
+    - name: Get random passphrase
+      shell: date +%s | sha256sum | base64 | head -c 20
+      register: random_value
+
+    - name: Add key to openvpn-ca/passwd
+      lineinfile:
+        dest: /home/afif/openvpn-ca/passwd
+        line: "generate {{ vpn_name }} key using password {{random_value.stdout}}"
+
+    - name: Create VPN Instance
+      ansible.builtin.expect:
+        command: "/home/afif/new_vpnuser.sh"
+        responses:
+          "Enter PEM pass phrase:": "{{random_value.stdout}}"
+          "Verifying - Enter PEM pass phrase:": "{{random_value.stdout}}"
