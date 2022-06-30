@@ -17,7 +17,7 @@
 
     - name: Set VPN name's file content
       copy:
-        dest: "/home/afif/ovpnuser.txt"
+        dest: "/home/ubuntu/ovpnuser.txt"
         content: "{{ vpn_name }}"
 
     - name: Get random passphrase
@@ -26,12 +26,12 @@
 
     - name: Add key to openvpn-ca/passwd
       lineinfile:
-        dest: /home/afif/openvpn-ca/passwd
+        dest: /home/ubuntu/openvpn-ca/passwd
         line: "generate {{ vpn_name }} key using password {{random_value.stdout}}"
 
     - name: Create VPN Instance
       ansible.builtin.expect:
-        command: "/home/afif/vpnuser.sh"
+        command: "/home/ubuntu/vpnuser.sh"
         responses:
           "Enter PEM pass phrase:": "{{random_value.stdout}}"
           "Verifying - Enter PEM pass phrase:": "{{random_value.stdout}}"

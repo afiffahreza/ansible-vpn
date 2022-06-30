@@ -17,16 +17,15 @@
 
     - name: Set VPN name's revocation file content
       copy:
-        dest: "/home/afif/ovpnrevoke.txt"
+        dest: "/home/ubuntu/ovpnrevoke.txt"
         content: "{{ vpn_name }}"
 
     - name: Revoke VPN
-      ansible.builtin.expect:
-        command: "/home/afif/vpnuserrevoke.sh"
+      shell: "/home/ubuntu/vpnuserrevoke.sh"
 
     - name: Copy certificate revocation list (CRL) and restart server
       shell: |
         sudo cp openvpn-ca/keys/crl.pem /etc/openvpn/keys/crl.pem
         sudo service openvpn@server restart
       args:
-        chdir: /home/afif
+        chdir: /home/ubuntu
