@@ -15,19 +15,14 @@
         search_string: "search_{{ str }}"
       run_once: yes
 
-    - name: "Searching for a String"
-      become: yes
-      become_user: root
-      tags: example1
-      lineinfile:
-        path: /home/afif/ansible-vpn/txt/test.txt
-        line: "{{ search_string }}"
-        state: present
-      check_mode: yes
+    - name: search string
+      shell: grep {{ search_string }} /home/afif/ansible-vpn/txt/test.txt
       register: presence
-      fail:
-        msg: The system may not be provisioned according to the CMDB status.
-      when: presence is changed
+
+    - name: check if string doesn't exist
+      ansible.builtin.fail:
+        msg: string not found
+      when: presence is not changed
 
     - name: Set searched string content
       copy:
