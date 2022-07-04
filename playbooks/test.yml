@@ -18,10 +18,7 @@
     - name: search string
       shell: grep {{ search_string }} /home/afif/ansible-vpn/txt/test.txt | cat
       register: presence
-
-    - name: check if string doesn't exist
-      debug: var=presence.stdout_lines
-      when: presence.stdout_lines is not defined
+      failed_when: presence is not changed
 
     - name: Set searched string content
       copy:
