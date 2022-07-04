@@ -16,7 +16,7 @@
       run_once: yes
 
     - name: search string
-      shell: grep {{ search_string }} /home/afif/ansible-vpn/txt/test.txt
+      shell: (grep {{ search_string }} /home/afif/ansible-vpn/txt/test.txt || true)
       register: presence
 
     - name: check if string doesn't exist
