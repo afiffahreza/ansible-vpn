@@ -20,7 +20,7 @@
       register: presence
 
     - name: check if string doesn't exist
-        debug: var=presence.stdout_lines
+      debug: var=presence.stdout_lines
       when: presence.stdout_lines is not defined
 
     - name: Set searched string content
