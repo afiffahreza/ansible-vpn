@@ -16,13 +16,13 @@
       run_once: yes
 
     - name: search string
-      shell: (grep {{ search_string }} /home/afif/ansible-vpn/txt/test.txt || true)
+      shell: grep {{ search_string }} /home/afif/ansible-vpn/txt/test.txt | cat
       register: presence
 
     - name: check if string doesn't exist
       ansible.builtin.fail:
         msg: string not found
-      when: presence is not changed
+      when: presence == ""
 
     - name: Set searched string content
       copy:
