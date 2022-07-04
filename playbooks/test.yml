@@ -20,9 +20,8 @@
       register: presence
 
     - name: check if string doesn't exist
-      ansible.builtin.fail:
-        msg: string not found
-      when: presence == ""
+        debug: var=presence.stdout_lines
+      when: presence.stdout_lines is not defined
 
     - name: Set searched string content
       copy:
