@@ -8,11 +8,11 @@
             that: "{{ item }} is defined"
             msg: "variable {{ item }} must be defined"
           with_items:
-            - username
+            - str
 
   tasks:
     - set_fact:
-        search_string: "oy_{{ username }}"
+        search_string: "search_{{ str }}"
       run_once: yes
 
     - name: "Searching for a String"
@@ -25,12 +25,17 @@
         state: present
       check_mode: yes
       register: presence
-      failed_when: presence is changed
+      ansible.builtin.fail:
+        msg: The system may not be provisioned according to the CMDB status.
+      when: presence is changed
 
     - name: Set searched string content
       copy:
         dest: "/home/afif/string.txt"
         content: "{{ search_string }}"
+
+    - name: Changing perm sh
+      file: dest=/home/afif/ansible-vpn/sh/test.sh mode=a+x
 
     - name: Test
       ansible.builtin.command: "/home/afif/ansible-vpn/sh/test.sh"
