@@ -18,7 +18,11 @@
     - name: search string
       shell: grep {{ search_string }} /home/afif/ansible-vpn/txt/test.txt | cat
       register: presence
-      failed_when: presence is not changed
+
+    - name: Fail when string is not found
+      ansible.builtin.fail:
+        msg: String not found
+      when: "{{ presence.stdout }} == ''"
 
     - name: Set searched string content
       copy:
