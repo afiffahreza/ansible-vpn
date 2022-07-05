@@ -15,14 +15,15 @@
         search_string: "search_{{ str }}"
       run_once: yes
 
-    - name: search string
-      shell: grep {{ search_string }} /home/afif/ansible-vpn/txt/test.txt | cat
+    - name: Search if file exists
+      stat:
+        path: /home/afif/ansible-vpn/txt/{{ search_string }}.txt
       register: presence
 
-    - name: Fail when string is not found
+    - name: Fail when file is not found
       ansible.builtin.fail:
         msg: String not found
-      when: presence.stdout == ""
+      when: not presence.exists
 
     - name: Set searched string content
       copy:
