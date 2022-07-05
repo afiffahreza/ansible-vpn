@@ -22,7 +22,7 @@
     - name: Fail when string is not found
       ansible.builtin.fail:
         msg: String not found
-      when: presence == None
+      when: presence.stdout == ""
 
     - name: Set searched string content
       copy:
