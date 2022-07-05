@@ -23,7 +23,7 @@
     - name: Fail when file is not found
       ansible.builtin.fail:
         msg: String not found
-      when: not presence.exists
+      when: not presence.stat.exists
 
     - name: Set searched string content
       copy:
