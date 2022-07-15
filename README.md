@@ -1,2 +1,3 @@
-# ansible-vpn
-Testing VPN Creation &amp; Revocation with Ansible
+# ansible-playbooks
+
+Playbooks for ansible testing
